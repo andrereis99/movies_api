@@ -10,12 +10,17 @@ const response = async (req, res, status = 500, code = null, message = null, dat
     });
 }
 
-const get_API_Url = async (api, route, lang = 'pt', page = 1) => {
+const get_API_Url = async (api, route, lang, page, query) => {
     // GET Image
     // https://image.tmdb.org/t/p/original/
     var url = null;
-    if (api === 'moviesDB') url = `https://api.themoviedb.org/3${route}?api_key=${process.env.MOVIES_DB_KEY}&language=${lang}&page=${page}`;
-    else if (api === 'omdb') url = `http://www.omdbapi.com/?${route}&apikey=${process.env.OMDB_KEY}`;
+    if (api === 'moviesDB'){
+        url = `https://api.themoviedb.org/3${route}?api_key=${process.env.MOVIES_DB_KEY}`
+        if (lang) url += `&language=${lang}`
+        if (page) url += `&page=${page}`
+        if (query) url += `&query=${query}`
+    }
+    else if (api === 'omdb') url = `http://www.omdbapi.com/?${route}${page ? `&page=${page}` : ''}&apikey=${process.env.OMDB_KEY}`;
 
     return url;
 }
