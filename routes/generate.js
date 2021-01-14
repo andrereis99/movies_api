@@ -44,15 +44,19 @@ const generateFunc = () => {
                 {poster && slide.addImage({ path:`https://image.tmdb.org/t/p/original/${poster}`, x:7.5, y:0.25, w:1.6, h:2.2 })}
             }
 
+            pptx.stream().then(data => {
+                // console.log('Saved! File Name: '+fileName)
 
+                // const path = `../${fileName}`;
+                // console.log('path', path)
+                // res.writeHead(200, { 'Content-disposition':'attachment;filename='+fileName, 'Content-Length':data.length });
+                // res.end(new Buffer(data, 'binary'));
 
-            pptx.writeFile(moment.utc()).then(function(fileName){
-                console.log('Saved! File Name: '+fileName)
-                response(req, res, 200, 'PPT_GENERATED', 'Power Point Generated', fileName);
+                const file = new Buffer(data, "base64")
+                // console.log(file.toString())
+
+                response(req, res, 200, 'PPT_GENERATED', 'Movies Presentation Generated', file);
             });
-        })
-        .get('/clear/ppt', async (req, res, next) => {
-            
         })
 }
 
