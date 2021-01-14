@@ -5,6 +5,11 @@ const errors = {
 		code: 'INTERNAL_ERROR',
 		message: 'Internal Server Error.',
 	},
+	invalid_list: {
+		status: 500,
+		code: 'INVALID_LIST',
+		message: 'Invalid List.',
+	},
 	// 404
 	not_found: {
 		status: 404,

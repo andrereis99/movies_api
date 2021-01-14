@@ -3,6 +3,7 @@ const express = require('express');
 // Routes
 const moviesRouter = require('./movies');
 const peopleRouter = require('./people');
+const generateRouter = require('./generate');
 
 
 const routersFunc = (app, server, mode) => {
@@ -10,6 +11,7 @@ const routersFunc = (app, server, mode) => {
     
     router.use('/movies', moviesRouter());
     router.use('/people', peopleRouter());
+    router.use('/generate', generateRouter());
 	return router;
 }
 

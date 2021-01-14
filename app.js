@@ -32,6 +32,7 @@ app.use(function (req, res, next) {
 
 //error handler
 app.use(function (err, req, res, next) {
+    console.error('[ERROR]', err);
     const message = JSON.parse(err.message);
     console.error('[ERROR]', err);
     response(req, res, err.status, err.code, message || err.message);
