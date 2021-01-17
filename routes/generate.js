@@ -10,7 +10,6 @@ const generateFunc = () => {
     return router
         .post('/movies/ppt', async (req, res, next) => {
             const { movies } = req.body;
-            console.log('Entrou')
 
             if (!movies || !movies.length) throw errors.invalid_list;
 

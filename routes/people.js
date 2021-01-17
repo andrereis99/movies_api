@@ -10,8 +10,6 @@ const moviesFunc = () => {
 
             const url1 = await get_API_Url('moviesDB', `/person/${id}`)
             const url2 = await get_API_Url('moviesDB', `/person/${id}/combined_credits`)
-            console.log('url1', url1)
-            console.log('url2', url2)
 
             var client = new HttpClient();
             await client.get(url1, async function(api_response1) {

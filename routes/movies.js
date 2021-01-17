@@ -9,11 +9,9 @@ const moviesFunc = () => {
             const { sorter, page = 1, lang = 'pt' } = req.params;
 
             const url = await get_API_Url('moviesDB', `/movie/${sorter}`, lang, page)
-            console.log('url', url)
 
             var client = new HttpClient();
             await client.get(url, function(api_response) {
-                console.log('response', api_response)
                 response(req, res, 200, 'MOVIES_FOUND', 'Movies found', JSON.parse(api_response));
             });
         })
@@ -22,9 +20,6 @@ const moviesFunc = () => {
             
             const url1 = await get_API_Url('moviesDB', '/search/multi', lang, page, search)
             const url2 = await get_API_Url('omdb', `s=${search}`, null, page)
-            
-            console.log('url1', url1)
-            console.log('url2', url2)
 
             var client = new HttpClient();
             await client.get(url1, async function(api_response1) {
@@ -36,7 +31,13 @@ const moviesFunc = () => {
 
                     if (response1.total_results > response2.totalResults)
                         for(const movie of response1.results) {
-                            const response2Item = response2.Search.find(elem => elem.Title == movie.original_title );
+                            const response2Item = response2.Search.find(elem =>
+                                elem.Title == movie.original_title ||
+                                elem.Title == movie.title ||
+                                elem.Title == movie.Title ||
+                                elem.Title == movie.name ||
+                                elem.Title == movie.original_name
+                                );
 
                             if (!response2Item) {
                                 finalRes.results.push(movie);
@@ -46,7 +47,13 @@ const moviesFunc = () => {
                         }
                     else
                         for(const movie of response2.Search) {
-                            const response1Item = response1.results.find(elem => elem.original_title == movie.Title );
+                            const response1Item = response1.results.find(elem =>
+                                elem.original_title == movie.original_title ||
+                                elem.original_title == movie.title ||
+                                elem.original_title == movie.Title ||
+                                elem.original_title == movie.name ||
+                                elem.original_title == movie.original_name
+                            );
 
                             if (!response1Item) {
                                 finalRes.results.push(movie);
@@ -67,24 +74,17 @@ const moviesFunc = () => {
             const url1 = await get_API_Url('moviesDB', `/movie/${id}`, lang)
             const url2 = await get_API_Url('moviesDB', `/movie/${id}/credits`, lang)
             const extraIdsUrl = await get_API_Url('moviesDB', `/movie/${id}/external_ids`, lang)
-            
-            console.log('url1', url1)
-            console.log('url2', url2)
 
             var client = new HttpClient();
             await client.get(url1, async function(api_response1) {
                 await client.get(url2, async function(api_response2) {
                     var extraIds = {};
 
-                    console.log('extraIdsUrl', extraIdsUrl)
-
                     await client.get(extraIdsUrl, async function(extraIds_response) {
                         extraIds = extraIds_response;
                     });
 
                     const url3 = await get_API_Url('omdb', `i=${JSON.parse(extraIds).imdb_id}`, lang)
-
-                    console.log('url3', url3)
 
                     await client.get(url3, async function(api_response3) {
 
